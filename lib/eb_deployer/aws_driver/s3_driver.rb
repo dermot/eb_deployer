@@ -1,6 +1,10 @@
 module EbDeployer
   module AWSDriver
     class S3Driver
+      def initialize(server_side_encryption=nil)
+        @server_side_encryption = server_side_encryption
+      end
+        
       def create_bucket(bucket_name)
         s3.create_bucket(:bucket => bucket_name)
       end
@@ -15,7 +19,7 @@ module EbDeployer
 
       def upload_file(bucket_name, obj_name, file)
         o = obj(bucket_name, obj_name)
-        o.upload_file(file)
+        o.upload_file(file, :server_side_encryption => @server_side_encryption)
       end
 
       private
