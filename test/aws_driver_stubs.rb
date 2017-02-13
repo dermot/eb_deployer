@@ -265,7 +265,7 @@ class S3Stub
   def create_bucket(bucket_name)
     @buckets[bucket_name] = {}
   end
-
+  
   def bucket_exists?(bucket_name)
     @buckets.has_key?(bucket_name)
   end
@@ -282,6 +282,11 @@ class S3Stub
     @buckets[bucket_name][obj_name] = file
   end
 
+  def tag_bucket(bucket_name)
+  end
+
+  def bucket_logging(bucket_name)
+  end
 end
 
 class CFStub

@@ -192,7 +192,7 @@ module EbDeployer
 
     bs = opts[:bs_driver] || AWSDriver::Beanstalk.new
     bs = ThrottlingHandling.new(bs, Aws::ElasticBeanstalk::Errors::Throttling)
-    s3 = opts[:s3_driver] || AWSDriver::S3Driver.new
+    s3 = opts[:s3_driver] || AWSDriver::S3Driver.new(opts)
     cf = opts[:cf_driver] || AWSDriver::CloudFormationDriver.new
 
     app_name = opts[:application]

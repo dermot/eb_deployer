@@ -22,6 +22,8 @@ module EbDeployer
 
     def ensure_bucket(bucket_name)
       @s3.create_bucket(@bucket_name) unless @s3.bucket_exists?(@bucket_name)
+      @s3.bucket_logging(bucket_name)
+      @s3.tag_bucket(bucket_name)
     end
 
     def upload_if_not_exists(file, bucket_name)
