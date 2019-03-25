@@ -3,7 +3,9 @@ require 'set'
 require 'time'
 require 'json'
 require 'timeout'
-require 'aws-sdk'
+require 'aws-sdk-s3'
+require 'aws-sdk-elasticbeanstalk'
+require 'aws-sdk-cloudformation'
 require 'optparse'
 require 'erb'
 require 'fileutils'
@@ -203,7 +205,8 @@ module EbDeployer
     application = Application.new(app_name, bs, s3, opts[:package_bucket])
     resource_stacks = ResourceStacks.new(opts[:resources],
                                          cf,
-                                         opts[:skip_resource_stack_update])
+                                         !!opts[:skip_resource_stack_update],
+                                         opts[:tags])
 
     stack_name = opts[:stack_name] || "#{app_name}-#{env_name}"
 
@@ -315,7 +318,6 @@ module EbDeployer
 
       opts.on("--debug", "Output AWS debug log") do |d|
         require 'logger'
-        require 'aws-sdk'
         logger = Logger.new($stdout)
         logger.level = Logger::DEBUG
         Aws.config.update(:logger => logger)

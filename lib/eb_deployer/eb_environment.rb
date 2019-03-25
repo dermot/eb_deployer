@@ -6,7 +6,7 @@ module EbDeployer
     attr_writer :event_poller
 
     def self.unique_ebenv_name(env_name, app_name)
-      raise "Environment name #{env_name} is too long, it must be under 15 chars" if env_name.size > 15
+      raise "Environment name #{env_name} is too long, it must be under 32 chars" if env_name.size > 32
       digest = Digest::SHA1.hexdigest(app_name + '-' + env_name)[0..6]
       "#{env_name}-#{digest}"
     end
@@ -36,7 +36,7 @@ module EbDeployer
     def apply_settings(settings)
       raise "Env #{self.name} not exists for applying settings" unless @bs.environment_exists?(@app, @name)
       wait_for_env_status_to_be_ready
-      with_polling_events(/Environment update completed successfully/i) do
+      with_polling_events(/Successfully deployed new configuration to environment/i) do
         @bs.update_environment_settings(@app, @name, settings)
       end
     end
@@ -104,7 +104,7 @@ module EbDeployer
     end
 
     def update_eb_env(settings, version_label)
-      with_polling_events(/Environment update completed successfully/i) do
+      with_polling_events(/Successfully deployed new configuration to environment/i) do
         @bs.update_environment(@app,
                                @name,
                                version_label,
