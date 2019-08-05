@@ -17,7 +17,7 @@ module EbDeployer
     private
 
     def s3_path
-      @_s3_path ||= Digest::MD5.file(@file).hexdigest + "-" + File.basename(@file)
+      @_s3_path ||= Digest::MD5.file(@file).hexdigest[0...6] + "-" + File.basename(@file)
     end
 
     def ensure_bucket(bucket_name)
